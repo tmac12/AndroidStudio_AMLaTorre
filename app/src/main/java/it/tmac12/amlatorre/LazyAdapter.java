@@ -78,9 +78,9 @@ public class LazyAdapter extends BaseAdapter {
 
         //carico l'immagine
         if (evento.luogo.equals("Crespano del Grappa")) {
-            holder.thumbnailImageView.setImageResource(R.drawable.home);
+            holder.thumbnailImageView.setImageResource(R.drawable.ic_home);
         } else {
-            holder.thumbnailImageView.setImageResource(R.drawable.bus);
+            holder.thumbnailImageView.setImageResource(R.drawable.ic_away);
         }
         holder.avversarioTextView.setText(evento.avversario);
         holder.orarioTextView.setText(evento.data);
