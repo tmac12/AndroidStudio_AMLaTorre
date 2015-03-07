@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">AM LaTorre Calendar</string>
-    <string name="action_settings">Settings</string>
+    <string name="content_descr_away_icon">Away game</string>
+    <string name="content_descr_home_icon">Home game</string>
+    <string name="game_datetime">on %1$s at %2$s</string>
 
 </resources>

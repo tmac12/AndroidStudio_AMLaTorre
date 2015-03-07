@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/row_min_height"
+    android:paddingBottom="@dimen/row_vertical_padding"
+    android:paddingTop="@dimen/row_vertical_padding">
+
+    <ImageView
+        android:id="@+id/id_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/content_horizontal_margin"
+        android:layout_marginRight="@dimen/content_horizontal_margin" />
+
+    <TextView
+        android:id="@+id/id_opponent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/id_icon"
+        android:layout_toRightOf="@+id/id_icon"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/id_datetime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/id_opponent"
+        android:layout_below="@+id/id_opponent"
+        android:textAppearance="?android:textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/id_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/id_opponent"
+        android:layout_below="@+id/id_datetime"
+        android:ellipsize="marquee"
+        android:maxLines="2"
+        android:textAppearance="?android:textAppearanceSmall" />
+</RelativeLayout>

@@ -1,83 +1,75 @@
 package it.tmac12.amlatorre;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class LazyAdapter extends BaseAdapter {
-    List<Game> mPartite;
-    LayoutInflater mInflater;
-    Context mContext;
+// TODO why lazy? :)
+public class LazyAdapter extends ArrayAdapter<Game> {
+    private final Context mContext;
+    private final LayoutInflater mInflater;
 
-    public LazyAdapter(List<Game> eventi, LayoutInflater inflater, Context context) {
-        mPartite = eventi;
-        mInflater = inflater;
+    public LazyAdapter(Context context, int layoutResId, List<Game> games) {
+        super(context, layoutResId, games);
         mContext = context;
-    }
-
-    @Override
-    public int getCount() {
-        return mPartite.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mPartite.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        // check if the view already exists
-        // if so, no need to inflate and findViewById again!
+        View view;
+        ViewHolder viewHolder;
         if (convertView == null) {
-            // Inflate the custom row layout from your XML.
-            convertView = mInflater.inflate(R.layout.row_partita, null);
-            // create a new "Holder" with subviews
-            holder = new ViewHolder();
-            holder.thumbnailImageView = (ImageView) convertView.findViewById(R.id.img_thumbnail);
-            holder.avversarioTextView = (TextView) convertView.findViewById(R.id.text_avversario);
-            holder.orarioTextView = (TextView) convertView.findViewById(R.id.text_orario);
-            // hang onto this holder for future recyclage
-            convertView.setTag(holder);
+            view = mInflater.inflate(R.layout.row_game, parent, false);
+            ImageView iconView = (ImageView) view.findViewById(R.id.id_icon);
+            TextView opponentView = (TextView) view.findViewById(R.id.id_opponent);
+            TextView datetimeView = (TextView) view.findViewById(R.id.id_datetime);
+            TextView locationView = (TextView) view.findViewById(R.id.id_location);
+            viewHolder = new ViewHolder(iconView, opponentView, datetimeView, locationView);
+            view.setTag(viewHolder);
         } else {
-            // skip all the expensive inflation/findViewById
-            // and just get the holder you already made
-            holder = (ViewHolder) convertView.getTag();
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
         }
-        // More code after this
-        //XmlParser.Categoria categoria = (XmlParser.Categoria) getItem(position);
-        Game evento = (Game) getItem(position);
-        //carico l'id della risorsa immagine da una string. http://stackoverflow.com/questions/4313007/setting-android-images-from-string-value
-        //int resId = mContext.getResources().getIdentifier(evento.immagine, "drawable", mContext.getPackageName());
-        //holder.thumbnailImageView.setImageResource(resId);
-        //carico l'immagine
-        if (evento.mLocation.equals("Crespano del Grappa")) {
-            holder.thumbnailImageView.setImageResource(R.drawable.ic_home);
+
+        Game game = getItem(position);
+        boolean isHomeGame = game.isHomeGame();
+        viewHolder.mIconView.setImageResource(isHomeGame ? R.drawable.ic_home : R.drawable.ic_away);
+        String contentDescr = mContext.getString(isHomeGame ? R.string.content_descr_home_icon : R.string.content_descr_away_icon);
+        viewHolder.mIconView.setContentDescription(contentDescr);
+        viewHolder.mOpponentView.setText(game.mOpponent);
+        if (!TextUtils.isEmpty(game.mTime)) {
+            viewHolder.mDatetimeView.setText(mContext.getString(R.string.game_datetime, game.mDate, game.mTime));
         } else {
-            holder.thumbnailImageView.setImageResource(R.drawable.ic_away);
+            viewHolder.mDatetimeView.setText(game.mDate);
         }
-        holder.avversarioTextView.setText(evento.mOpponent);
-        holder.orarioTextView.setText(evento.mDate);
-        return convertView;
+        if (!TextUtils.isEmpty(game.mLocation)) {
+            viewHolder.mLocationView.setText(game.mLocation);
+            viewHolder.mLocationView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.mLocationView.setVisibility(View.GONE);
+        }
+        return view;
     }
 
-    // this is used so you only ever have to do
-// inflation and finding by ID once ever per View
     private static class ViewHolder {
-        public ImageView thumbnailImageView;
-        public TextView avversarioTextView;
-        public TextView orarioTextView;
+        private final ImageView mIconView;
+        private final TextView mOpponentView;
+        private final TextView mDatetimeView;
+        private final TextView mLocationView;
+
+        public ViewHolder(ImageView iconView, TextView opponentView, TextView datetimeView, TextView locationView) {
+            mIconView = iconView;
+            mOpponentView = opponentView;
+            mDatetimeView = datetimeView;
+            mLocationView = locationView;
+        }
     }
 }

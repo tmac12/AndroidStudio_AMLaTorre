@@ -6,7 +6,8 @@ import java.io.Serializable;
  * A team game.
  */
 public final class Game implements Serializable {
-    private static final long serialVersionUID = 122247385562510378L;
+    private static final long serialVersionUID = -211632489881026293L;
+    private static final String HOME_LOCATION = "Crespano del Grappa";
 
     public final String mOpponent;
     public final String mDate;
@@ -20,6 +21,10 @@ public final class Game implements Serializable {
         mTime = gameBuilder.mTime;
         mLocation = gameBuilder.mLocation;
         mWinner = gameBuilder.mWinner;
+    }
+
+    public boolean isHomeGame() {
+        return HOME_LOCATION.equalsIgnoreCase(mLocation);
     }
 
     @Override
