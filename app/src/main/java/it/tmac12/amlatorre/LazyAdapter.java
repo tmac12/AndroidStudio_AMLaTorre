@@ -10,21 +10,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by marco on 30/11/14.
- */
 public class LazyAdapter extends BaseAdapter {
-    List<XmlParser.Partita> mPartite;
+    List<Game> mPartite;
     LayoutInflater mInflater;
     Context mContext;
 
-
-    public LazyAdapter(List<XmlParser.Partita> eventi, LayoutInflater inflater, Context context) {
+    public LazyAdapter(List<Game> eventi, LayoutInflater inflater, Context context) {
         mPartite = eventi;
         mInflater = inflater;
         mContext = context;
     }
-
 
     @Override
     public int getCount() {
@@ -44,47 +39,37 @@ public class LazyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-
         // check if the view already exists
         // if so, no need to inflate and findViewById again!
         if (convertView == null) {
-
             // Inflate the custom row layout from your XML.
             convertView = mInflater.inflate(R.layout.row_partita, null);
-
             // create a new "Holder" with subviews
             holder = new ViewHolder();
             holder.thumbnailImageView = (ImageView) convertView.findViewById(R.id.img_thumbnail);
             holder.avversarioTextView = (TextView) convertView.findViewById(R.id.text_avversario);
             holder.orarioTextView = (TextView) convertView.findViewById(R.id.text_orario);
-
             // hang onto this holder for future recyclage
             convertView.setTag(holder);
         } else {
-
             // skip all the expensive inflation/findViewById
             // and just get the holder you already made
             holder = (ViewHolder) convertView.getTag();
         }
         // More code after this
-
         //XmlParser.Categoria categoria = (XmlParser.Categoria) getItem(position);
-        XmlParser.Partita evento = (XmlParser.Partita) getItem(position);
-
+        Game evento = (Game) getItem(position);
         //carico l'id della risorsa immagine da una string. http://stackoverflow.com/questions/4313007/setting-android-images-from-string-value
         //int resId = mContext.getResources().getIdentifier(evento.immagine, "drawable", mContext.getPackageName());
         //holder.thumbnailImageView.setImageResource(resId);
-
-
         //carico l'immagine
-        if (evento.luogo.equals("Crespano del Grappa")) {
+        if (evento.mLocation.equals("Crespano del Grappa")) {
             holder.thumbnailImageView.setImageResource(R.drawable.ic_home);
         } else {
             holder.thumbnailImageView.setImageResource(R.drawable.ic_away);
         }
-        holder.avversarioTextView.setText(evento.avversario);
-        holder.orarioTextView.setText(evento.data);
-
+        holder.avversarioTextView.setText(evento.mOpponent);
+        holder.orarioTextView.setText(evento.mDate);
         return convertView;
     }
 
