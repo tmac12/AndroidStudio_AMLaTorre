@@ -7,12 +7,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
 public class GamesFrag extends ListFragment {
+    private List<Game> mGames;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        mGames = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,8 +32,18 @@ public class GamesFrag extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        GamesLoader gamesLoader = new GamesLoader(getActivity());
-        gamesLoader.execute();
+        final Context context = getActivity();
+        if (mGames == null) {
+            GamesLoader gamesLoader = new GamesLoader(context);
+            gamesLoader.execute();
+        } else {
+            setGamesToList(context, mGames);
+        }
+    }
+
+    private void setGamesToList(Context context, List<Game> games) {
+        LazyAdapter adapter = new LazyAdapter(context, R.layout.row_game, games);
+        getListView().setAdapter(adapter);
     }
 
     private class GamesLoader extends AsyncTask<Void, Void, List<Game>> {
@@ -44,8 +61,8 @@ public class GamesFrag extends ListFragment {
         @Override
         protected void onPostExecute(List<Game> games) {
             super.onPostExecute(games);
-            ArrayAdapter<Game> adapter = new LazyAdapter(mContext, R.layout.row_game, games);
-            getListView().setAdapter(adapter);
+            mGames = games;
+            setGamesToList(mContext, games);
         }
     }
 }
