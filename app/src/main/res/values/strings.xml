@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AM LaTorre Calendar</string>
-    <string name="content_descr_away_icon">Away game</string>
-    <string name="content_descr_home_icon">Home game</string>
+    <string name="app_name">AM LaTorre Schedule</string>
+    <string name="content_descr_away_icon">Away</string>
+    <string name="content_descr_home_icon">Home</string>
     <string name="game_datetime">on %1$s at %2$s</string>
-    <string name="empty_games">No games in program</string>
+    <string name="empty_games">No games scheduled</string>
 
 </resources>
