@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Calendario AM LaTorre</string>
+    <string name="content_descr_away_icon">In trasferta</string>
+    <string name="content_descr_home_icon">In casa</string>
+    <string name="game_datetime">il %1$s alle %2$s</string>
+    <string name="empty_games">Nessuna partita in calendario</string>
+
+</resources>
